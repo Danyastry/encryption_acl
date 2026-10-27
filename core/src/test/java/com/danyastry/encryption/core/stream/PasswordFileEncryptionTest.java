@@ -66,7 +66,20 @@ class PasswordFileEncryptionTest {
     void detectsAFileCutInsideAChunk() {
         byte[] encrypted = encrypt(randomBytes(2 * CHUNK, 3));
 
-        assertFailure(Arrays.copyOf(encrypted, encrypted.length - 100), PASSWORD, DecryptionFailure.AUTHENTICATION_FAILED);
+        assertFailure(Arrays.copyOf(encrypted, encrypted.length - 100), PASSWORD, DecryptionFailure.DAMAGED);
+    }
+
+    @Test
+    void blamesThePasswordOnlyWhenTheFirstChunkFails() {
+        byte[] encrypted = encrypt(randomBytes(3 * CHUNK, 7));
+        int header = headerLength(encrypted);
+        byte[] firstChunkDamaged = encrypted.clone();
+        firstChunkDamaged[header + 10] ^= 1;
+        byte[] laterChunkDamaged = encrypted.clone();
+        laterChunkDamaged[header + StreamChunks.SEALED_CHUNK_SIZE + 10] ^= 1;
+
+        assertFailure(firstChunkDamaged, PASSWORD, DecryptionFailure.AUTHENTICATION_FAILED);
+        assertFailure(laterChunkDamaged, PASSWORD, DecryptionFailure.DAMAGED);
     }
 
     @Test

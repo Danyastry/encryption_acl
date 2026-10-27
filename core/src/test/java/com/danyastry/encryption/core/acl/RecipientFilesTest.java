@@ -146,6 +146,17 @@ class RecipientFilesTest {
     }
 
     @Test
+    void damagedContentIsNeverBlamedOnTheKey() {
+        byte[] encrypted = encrypt(report, alice);
+        int header = encrypted.length - payload(encrypted).length;
+        byte[] damaged = encrypted.clone();
+        damaged[header + 5] ^= 1;
+
+        assertFailure(damaged, alice, DecryptionFailure.DAMAGED);
+        assertFailure(Arrays.copyOf(encrypted, encrypted.length - 1000), alice, DecryptionFailure.DAMAGED);
+    }
+
+    @Test
     void needsAtLeastOneValidRecipient() {
         assertThatThrownBy(() -> files.encrypt(new ByteArrayInputStream(report), new ByteArrayOutputStream(), List.of()))
                 .isInstanceOf(IllegalArgumentException.class);

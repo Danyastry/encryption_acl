@@ -63,7 +63,7 @@ public final class PasswordFileEncryption {
         PasswordStreamHeader header = PasswordStreamHeader.read(in);
         byte[] payloadKey = payloadKey(header.kdf(), password, header.salt(), header.payloadNonce(), header.encode());
         try {
-            return new DecryptingInputStream(in, payloadKey);
+            return new DecryptingInputStream(in, payloadKey, false);
         } finally {
             Secrets.wipe(payloadKey);
         }

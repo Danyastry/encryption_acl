@@ -19,9 +19,12 @@ public final class DecryptingInputStream extends InputStream {
     private long counter;
     private boolean finished;
 
-    public DecryptingInputStream(InputStream in, byte[] payloadKey) {
+    private final boolean keyVerified;
+
+    public DecryptingInputStream(InputStream in, byte[] payloadKey, boolean keyVerified) {
         this.in = in;
         this.key = payloadKey.clone();
+        this.keyVerified = keyVerified;
     }
 
     @Override
@@ -74,7 +77,7 @@ public final class DecryptingInputStream extends InputStream {
             throw new StreamDecryptionException(diagnose(chunk, last));
         }
         if (last && plaintext.length == 0 && counter > 0) {
-            throw new StreamDecryptionException(DecryptionFailure.AUTHENTICATION_FAILED);
+            throw new StreamDecryptionException(DecryptionFailure.DAMAGED);
         }
         position = 0;
         counter++;
@@ -86,7 +89,7 @@ public final class DecryptingInputStream extends InputStream {
             StreamChunks.open(key, counter, !last, chunk);
             return last ? DecryptionFailure.TRUNCATED : DecryptionFailure.TRAILING_DATA;
         } catch (AEADBadTagException e) {
-            return DecryptionFailure.AUTHENTICATION_FAILED;
+            return keyVerified || counter > 0 ? DecryptionFailure.DAMAGED : DecryptionFailure.AUTHENTICATION_FAILED;
         }
     }
 }
