@@ -73,7 +73,7 @@ public final class RecipientFiles {
         try {
             byte[] payloadKey = StreamChunks.payloadKey(fileKey, header.payloadNonce(), NO_HEADER);
             try {
-                return new DecryptingInputStream(in, payloadKey);
+                return new DecryptingInputStream(in, payloadKey, true);
             } finally {
                 Secrets.wipe(payloadKey);
             }

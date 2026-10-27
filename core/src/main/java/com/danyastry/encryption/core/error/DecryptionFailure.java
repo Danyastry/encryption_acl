@@ -8,6 +8,7 @@ public enum DecryptionFailure {
     MALFORMED("The envelope is truncated or has invalid parameters"),
     AUTHENTICATION_FAILED("Wrong password, or the data was changed"),
     NOT_A_RECIPIENT("Your key is not one of the recipients of this file"),
+    DAMAGED("The encrypted data was changed or cut short"),
     TRUNCATED("The data ends before its last chunk"),
     TRAILING_DATA("Extra data follows the end of the encrypted stream");
 
