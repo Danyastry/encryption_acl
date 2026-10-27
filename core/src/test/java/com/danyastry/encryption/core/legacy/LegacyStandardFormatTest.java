@@ -3,8 +3,8 @@ package com.danyastry.encryption.core.legacy;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.danyastry.encryption.core.password.DecryptionException;
-import com.danyastry.encryption.core.password.DecryptionFailure;
+import com.danyastry.encryption.core.error.DecryptionException;
+import com.danyastry.encryption.core.error.DecryptionFailure;
 import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.Test;
 

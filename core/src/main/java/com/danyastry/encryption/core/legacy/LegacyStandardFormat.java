@@ -1,9 +1,9 @@
 package com.danyastry.encryption.core.legacy;
 
 import com.danyastry.encryption.core.aead.AesGcm;
+import com.danyastry.encryption.core.error.DecryptionException;
+import com.danyastry.encryption.core.error.DecryptionFailure;
 import com.danyastry.encryption.core.kdf.Pbkdf2;
-import com.danyastry.encryption.core.password.DecryptionException;
-import com.danyastry.encryption.core.password.DecryptionFailure;
 import com.danyastry.encryption.core.util.Secrets;
 import java.util.Arrays;
 import java.util.Base64;

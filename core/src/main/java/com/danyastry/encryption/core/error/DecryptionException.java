@@ -1,4 +1,4 @@
-package com.danyastry.encryption.core.password;
+package com.danyastry.encryption.core.error;
 
 public final class DecryptionException extends Exception {
 

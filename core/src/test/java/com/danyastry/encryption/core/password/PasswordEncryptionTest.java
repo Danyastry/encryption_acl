@@ -3,6 +3,8 @@ package com.danyastry.encryption.core.password;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.danyastry.encryption.core.error.DecryptionException;
+import com.danyastry.encryption.core.error.DecryptionFailure;
 import com.danyastry.encryption.core.kdf.Argon2idParameters;
 import com.danyastry.encryption.core.kdf.Pbkdf2Parameters;
 import java.nio.ByteBuffer;
