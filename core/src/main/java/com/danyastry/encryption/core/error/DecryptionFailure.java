@@ -6,7 +6,9 @@ public enum DecryptionFailure {
     WRONG_TYPE("The envelope is of a different kind: password or public key"),
     MISSING_SENDER_KEY("The message is from an authenticated sender; give the sender's public key"),
     MALFORMED("The envelope is truncated or has invalid parameters"),
-    AUTHENTICATION_FAILED("Wrong password, or the data was changed");
+    AUTHENTICATION_FAILED("Wrong password, or the data was changed"),
+    TRUNCATED("The data ends before its last chunk"),
+    TRAILING_DATA("Extra data follows the end of the encrypted stream");
 
     private final String description;
 
