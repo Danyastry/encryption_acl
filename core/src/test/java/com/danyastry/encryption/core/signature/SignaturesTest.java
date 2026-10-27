@@ -5,9 +5,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.danyastry.encryption.core.util.Fingerprint;
 import com.danyastry.encryption.core.util.Hex;
+import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.Random;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
@@ -83,6 +85,26 @@ class SignaturesTest {
         assertFailure(() -> Signatures.verify(CONTRACT, newer, alice.publicKey()), VerificationFailure.UNSUPPORTED_VERSION);
         assertFailure(() -> Signatures.verify(CONTRACT, otherAlgorithm, alice.publicKey()), VerificationFailure.MALFORMED);
         assertFailure(() -> Signatures.verify(CONTRACT, Arrays.copyOf(signature, 50), alice.publicKey()), VerificationFailure.MALFORMED);
+    }
+
+    @Test
+    void signsStreamsOfAnySizeByDigest() throws Exception {
+        byte[] large = new byte[3 * 1024 * 1024];
+        new Random(7).nextBytes(large);
+
+        byte[] signature = Signatures.signStream(new ByteArrayInputStream(large), alice);
+
+        assertThat(Signatures.verifyStream(new ByteArrayInputStream(large), signature, alice.publicKey()).signerPublicKey())
+                .isEqualTo(alice.publicKey());
+        large[large.length - 1] ^= 1;
+        assertFailure(() -> Signatures.verifyStream(new ByteArrayInputStream(large), signature, alice.publicKey()), VerificationFailure.INVALID_SIGNATURE);
+    }
+
+    @Test
+    void aFileSignatureIsNotASignatureOnTheRawData() throws Exception {
+        byte[] signature = Signatures.signStream(new ByteArrayInputStream(CONTRACT), alice);
+
+        assertFailure(() -> Signatures.verify(CONTRACT, signature, alice.publicKey()), VerificationFailure.INVALID_SIGNATURE);
     }
 
     @Test
