@@ -1,16 +1,2 @@
-plugins {
-    id("java")
-}
-
-group = "org.example"
-version = "1.0-SNAPSHOT"
-
-repositories {
-    mavenCentral()
-}
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
+group = "com.danyastry.encryption"
+version = "0.1.0"

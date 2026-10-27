@@ -1,6 +1,8 @@
 package com.danyastry.encryption.core.password;
 
 import com.danyastry.encryption.core.aead.AesGcm;
+import com.danyastry.encryption.core.error.DecryptionException;
+import com.danyastry.encryption.core.error.DecryptionFailure;
 import com.danyastry.encryption.core.kdf.Argon2idParameters;
 import com.danyastry.encryption.core.kdf.KdfAlgorithm;
 import com.danyastry.encryption.core.kdf.KdfParameters;
