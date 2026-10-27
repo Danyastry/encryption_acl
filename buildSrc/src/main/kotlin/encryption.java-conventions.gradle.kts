@@ -25,6 +25,7 @@ tasks.withType<JavaCompile>().configureEach {
 dependencies {
     testImplementation(platform(libs.findLibrary("junit-bom").get()))
     testImplementation(libs.findLibrary("junit-jupiter").get())
+    testImplementation(libs.findLibrary("junit-params").get())
     testImplementation(libs.findLibrary("assertj").get())
     testRuntimeOnly(libs.findLibrary("junit-launcher").get())
 }
