@@ -96,11 +96,11 @@ class PasswordEncryptionTest {
 
     @Test
     void handlesEmptyMessagesAndUnicodePasswords() throws Exception {
-        char[] password = "Grüße café".toCharArray();
+        char[] password = "Price \u00A3 5 and \u20AC 6".toCharArray();
         byte[] envelope = FAST_ARGON.encrypt(new byte[0], password);
 
-        assertThat(PasswordEncryption.decrypt(envelope, "Grüße café".toCharArray())).isEmpty();
-        assertThat(password).containsExactly("Grüße café".toCharArray());
+        assertThat(PasswordEncryption.decrypt(envelope, "Price \u00A3 5 and \u20AC 6".toCharArray())).isEmpty();
+        assertThat(password).containsExactly("Price \u00A3 5 and \u20AC 6".toCharArray());
     }
 
     @Test
